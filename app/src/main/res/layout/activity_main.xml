@@ -24,6 +24,19 @@
             android:paddingEnd="16dp"
             tools:context=".MainActivity">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,14 +51,6 @@
                     android:layout_height="wrap_content"
                     android:background="#66FFEB3B"
                     android:gravity="center_vertical" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/doTryChannel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Channelの値を確認開始"
-                    tools:ignore="HardcodedText" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/doCancelChannel"
@@ -73,14 +78,6 @@
                     android:gravity="center_vertical" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/doTryFlow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Flowの値を確認開始"
-                    tools:ignore="HardcodedText" />
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/doCancelFlow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,14 +103,6 @@
                     android:gravity="center_vertical" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/doSharedFlow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="SharedFlowの値を確認開始"
-                    tools:ignore="HardcodedText" />
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/doCancelSharedFlow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -137,22 +126,6 @@
                     android:layout_height="wrap_content"
                     android:background="#66FFEB3B"
                     android:gravity="center_vertical" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/doStateFlow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="StateFlowの値を確認開始"
-                    tools:ignore="HardcodedText" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/doStateFlow2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="StateFlowの値を確認開始2"
-                    tools:ignore="HardcodedText" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/doCancelStateFlow"

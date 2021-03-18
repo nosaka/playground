@@ -3,61 +3,70 @@ package me.nosaka.kotlin.playground
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+
 class MainViewModel constructor(
     application: Application
 ) : AndroidViewModel(application) {
 
-    val testChannel: ReceiveChannel<Int>
+    val testFlow: Flow<String>
 
-    val testFlow: Flow<Int>
+    val testSharedFlow: SharedFlow<String>
 
-    val testSharedFlow: SharedFlow<Int>
+    var testStateFlow: MutableStateFlow<String>
 
-    var testStateFlow: MutableStateFlow<Int>
+    sealed class CounterMsg {
+        object IncCounter : CounterMsg() // one-way message to increment counter
+        class GetCounter(val response: CompletableDeferred<Int>) :
+            CounterMsg() // a request with reply
+    }
+
+    fun counterActor() {
+        viewModelScope.launch {
+            actor<CounterMsg> {
+                var counter = 0 // actor state
+                for (msg in channel) { // iterate over incoming messages
+                    when (msg) {
+                        is CounterMsg.IncCounter -> counter++
+                        is CounterMsg.GetCounter -> msg.response.complete(counter)
+                    }
+                }
+            }
+        }
+    }
 
     init {
-        testChannel = initChannel()
         testFlow = initFlow()
         testSharedFlow = initSharedFlow()
         testStateFlow = initStateFlow()
     }
 
-    private fun initChannel(): ReceiveChannel<Int> {
-        return viewModelScope.produce {
-            var i = 0
-            while (true) {
-                this.offer(i)
-                i++
-                delay(TimeUnit.SECONDS.toMillis(1))
-            }
-        }
-    }
-
-    private fun initFlow(): Flow<Int> {
+    // Cold
+    private fun initFlow(): Flow<String> {
         return flow {
             var i = 0
             while (true) {
-                emit(i)
+                this.emit(i.toString())
                 i++
                 delay(TimeUnit.SECONDS.toMillis(1))
             }
         }
     }
 
-    private fun initSharedFlow(): SharedFlow<Int> {
-        val flow = MutableSharedFlow<Int>()
+    // Hot
+    private fun initSharedFlow(): SharedFlow<String> {
+        val flow = MutableSharedFlow<String>()
         viewModelScope.launch(Dispatchers.IO) {
             var i = 0
             while (true) {
-                flow.emit(i)
+                flow.emit(i.toString())
                 i++
                 delay(TimeUnit.SECONDS.toMillis(1))
             }
@@ -65,12 +74,13 @@ class MainViewModel constructor(
         return flow
     }
 
-    private fun initStateFlow(): MutableStateFlow<Int> {
-        val flow = MutableStateFlow(0)
+    // Hot
+    private fun initStateFlow(): MutableStateFlow<String> {
+        val flow = MutableStateFlow("")
         viewModelScope.launch(Dispatchers.IO) {
             var i = 0
             while (true) {
-                flow.emit(i)
+                flow.emit(i.toString())
                 i++
                 delay(TimeUnit.SECONDS.toMillis(1))
             }
